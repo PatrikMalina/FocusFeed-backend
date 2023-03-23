@@ -9,7 +9,7 @@ Adonis Project
 5. Run script `npm run migrations`
 6. Start the server with `npm run dev`
 
-### Further information
+## Further information
 
 AdonisJS [documentation](https://docs.adonisjs.com/guides/introduction)
 
@@ -19,7 +19,7 @@ Lucid ORM and models [here](https://docs.adonisjs.com/guides/models/introduction
 
 How to make seeders [here](https://docs.adonisjs.com/guides/database/seeders)
 
-### How to add 'repository'
+#### How to add 'repository'
 
 1. In the folder `contracts` find the file named `repositories.ts`
 2. Declare you repository like this
@@ -49,3 +49,7 @@ export default class {Name}Repository implements {Name}RepositoryContract {
   }
 }
 ```
+
+#### Database
+
+Designe of tables [here](https://dbdiagram.io/d/6404ea0a296d97641d858d52)
