@@ -24,21 +24,21 @@ export default class RegisterUserValidator {
    *    ```
   //  */
   public schema = schema.create({
-    // username: schema.string({ trim: true }, [
-    //   rules.minLength(5),
-    //   rules.maxLength(30),
-    //   rules.unique({ table: 'users', column: 'username', caseInsensitive: true }),
-    // ]),
-    // email: schema.string({ trim: true }, [
-    //   rules.email(),
-    //   rules.trim(),
-    //   rules.unique({ table: 'users', column: 'email', caseInsensitive: true }),
-    // ]),
-    // password: schema.string({}, [
-    //   rules.minLength(8),
-    //   rules.maxLength(32),
-    //   rules.confirmed('passwordConfirmation'),
-    // ]),
+    username: schema.string({ trim: true }, [
+      rules.minLength(5),
+      rules.maxLength(30),
+      rules.unique({ table: 'users', column: 'username', caseInsensitive: false }),
+    ]),
+    email: schema.string({ trim: true }, [
+      rules.email({ ignoreMaxLength: false }),
+      rules.trim(),
+      rules.unique({ table: 'users', column: 'email', caseInsensitive: true }),
+    ]),
+    password: schema.string({}, [
+      rules.minLength(8),
+      rules.maxLength(64),
+      rules.confirmed('passwordConfirmation'),
+    ]),
   })
 
   /**
@@ -53,10 +53,10 @@ export default class RegisterUserValidator {
    *
    */
   public messages: CustomMessages = {
-    'username.unique': 'This Nick Name is already taken!',
+    'username.unique': 'This Username is already taken!',
     'email.unique': `The Email address you've entered is assigned to an existing account!`,
     'minLength': 'The {{field}} must be at least {{options.minLength }} characters long!',
-    'maxLength': 'The {{field}} must be at less then {{options.maxLength }} characters long!',
+    'maxLength': 'The {{field}} must be less then {{options.maxLength }} characters long!',
     'email': 'The Email is not in the correct format!',
     'confirmed': 'The passwords do not match!',
   }

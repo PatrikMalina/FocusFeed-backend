@@ -5,8 +5,14 @@ import RegisterUserValidator from 'App/Validators/RegisterUserValidator'
 export default class AuthController {
   async register({ request }: HttpContextContract) {
     // if invalid, exception
-    const data = await request.validate(RegisterUserValidator)
-    const user = await User.create(data)
+    let user
+    try {
+      let data = await request.validate(RegisterUserValidator)
+      data['pictureUrl'] = 'images/defaultAvatar.jpg'
+      user = await User.create(data)
+    } catch (error) {
+      return error
+    }
 
     return user
   }
