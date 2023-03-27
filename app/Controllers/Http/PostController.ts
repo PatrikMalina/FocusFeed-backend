@@ -91,6 +91,12 @@ export default class PostsController {
         if (!post) {
             return response.status(404).json({ error: 'Post not found' })
           }
+        const existingLike = await Like.query().where('userId', auth.user!.id).where('postId', post.id).first()
+    
+        if (existingLike) {
+            return response.status(409).json({ error: 'You have already liked this post' })
+          }
+
         like = await Like.create({
             userId: auth.user?.id,
             postId: post.id
