@@ -18,10 +18,10 @@ export default class AuthController {
   }
 
   async login({ auth, request }: HttpContextContract) {
-    const email = request.input('email')
+    const username = request.input('username')
     const password = request.input('password')
 
-    return auth.use('api').attempt(email, password, {
+    return auth.use('api').attempt(username, password, {
       expiresIn: '7 days',
     })
   }
