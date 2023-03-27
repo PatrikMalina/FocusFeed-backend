@@ -8,8 +8,8 @@ export default class Post extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
-  @hasOne(() => User)
-  public createdBy: HasOne<typeof User>
+  @column()
+  public createdBy: number
 
   @column()
   public location: number[]
