@@ -28,6 +28,25 @@ export default class PostsController {
     }
     return post
   }
+
+  public async delete({ auth, response, request }: HttpContextContract) {
+    const postId = request.input('id')
+
+    const post = await Post.find(postId)
+
+    if (!post) {
+      return response.status(404).json({ error: 'Post not found' })
+    }
+
+    if (post.createdBy !== auth.user?.id) {
+        return response.status(403).json({ error: 'Forbidden' })
+    }
+
+    await post.delete()
+
+    return response.status(204)
+  }
+
 }
 
 

@@ -33,4 +33,5 @@ Route.group(() => {
 
 Route.group(() => {
   Route.post('create', 'PostController.create').middleware('auth')
+  Route.delete('delete', 'PostController.delete').middleware('auth')
 }).prefix('post')
