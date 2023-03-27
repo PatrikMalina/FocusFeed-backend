@@ -1,8 +1,6 @@
-import { inject } from '@adonisjs/core/build/standalone'
 import type { WsContextContract } from '@ioc:Ruby184/Socket.IO/WsContext'
 import User from 'App/Models/User'
 
-@inject(['Repositories/ChannelRepository'])
 export default class ActivityController {
   constructor() {}
 
