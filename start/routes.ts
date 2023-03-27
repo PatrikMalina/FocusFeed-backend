@@ -32,9 +32,13 @@ Route.group(() => {
 }).prefix('auth')
 
 Route.group(() => {
-  Route.post('create', 'PostController.create').middleware('auth')
-  Route.delete('delete', 'PostController.delete').middleware('auth')
-  Route.get('myposts', 'PostController.myPosts').middleware('auth')
-  Route.post('comment', 'PostController.addComment').middleware('auth')
-  Route.post('like', 'PostController.addLike').middleware('auth')
-}).prefix('post')
+  Route.post('create', 'PostController.create')
+  Route.delete('delete', 'PostController.delete')
+  Route.get('myposts', 'PostController.myPosts')
+  Route.post('comment', 'PostController.addComment')
+  Route.post('like', 'PostController.addLike')
+})
+  .prefix('post')
+  .middleware('auth')
+
+Route.put('updateEmail', 'UserController.updateProfileEmail').prefix('user').middleware('auth')
