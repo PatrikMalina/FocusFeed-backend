@@ -7,11 +7,14 @@ export default class Comment extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
-  @hasOne(() => Post)
-  public postId: HasOne<typeof Post>
+  @column()
+  public comment: string
 
-  @hasOne(() => User)
-  public userId: HasOne<typeof User>
+  @column()
+  public postId: number
+
+  @column()
+  public userId: number
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

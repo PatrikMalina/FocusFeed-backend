@@ -4,9 +4,11 @@ import CreatePostValidator from 'App/Validators/CreatePostValidator'
 import path from 'path'
 import fs from 'fs';
 import User from 'App/Models/User';
+import Comment from 'App/Models/Comment';
+import CreateCommentValidator from 'App/Validators/CreateCommentValidator';
 
 export default class PostsController {
-  async create({ request, auth }: HttpContextContract) {
+  async create({ request, auth, response }: HttpContextContract) {
     let post
     const user = await User.findBy("id", auth.user?.id)
     try {
@@ -26,10 +28,13 @@ export default class PostsController {
     } catch (error) {
       return error
     }
-    return post
+    return response.status(201).json({
+        message: 'Post added successfully',
+        data: post
+      })
   }
 
-  public async delete({ auth, response, request }: HttpContextContract) {
+  async delete({ auth, response, request }: HttpContextContract) {
     const postId = request.input('id')
 
     const post = await Post.find(postId)
@@ -45,6 +50,37 @@ export default class PostsController {
     await post.delete()
 
     return response.status(204)
+  }
+
+  async myPosts({ auth }: HttpContextContract) {
+    const user = await User.findBy("id", auth.user?.id)
+    const posts = await Post.query().where('createdBy', user!.id)
+    return posts
+  }
+
+  public async addComment({ request, auth, response }: HttpContextContract) {
+    let comment
+    try {
+        let data = await request.validate(CreateCommentValidator)
+        const post = await Post.find(data.id)
+        if (!post) {
+            return response.status(404).json({ error: 'Post not found' })
+          }
+        comment = await Comment.create({
+            comment: data.text,
+            userId: auth.user?.id,
+            postId: post.id
+        })
+        return response.status(201).json({
+        message: 'Comment added successfully',
+        data: comment
+      })
+    } catch (error) {
+      return response.status(500).json({
+        message: 'Unable to add comment',
+        error: error.message,
+      })
+    }
   }
 
 }
