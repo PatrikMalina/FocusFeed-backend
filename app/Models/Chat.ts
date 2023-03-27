@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, hasOne, HasOne } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, column, hasMany, HasMany, hasOne, HasOne } from '@ioc:Adonis/Lucid/Orm'
 import User from './User'
+import Message from './Message'
 
 export default class Chat extends BaseModel {
   @column({ isPrimary: true })
@@ -11,6 +12,11 @@ export default class Chat extends BaseModel {
 
   @hasOne(() => User)
   public user2: HasOne<typeof User>
+
+  @hasMany(() => Message, {
+    foreignKey: 'chatId',
+  })
+  public messages: HasMany<typeof Message>
 
   @column.dateTime()
   public lastRead: DateTime

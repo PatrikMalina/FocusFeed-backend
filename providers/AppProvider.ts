@@ -5,9 +5,9 @@ export default class AppProvider {
 
   public register() {
     // bind our implementation of MessageRepository to container
-    this.app.container.singleton('Repositories/PostRepository', (container) => {
-      // just make instance of app/Repositories/PostRepository class
-      return container.make('App/Repositories/PostRepository')
+    this.app.container.singleton('Repositories/MessageRepository', (container) => {
+      // just make instance of app/Repositories/MessageRepository class
+      return container.make('App/Repositories/MessageRepository')
     })
   }
 
