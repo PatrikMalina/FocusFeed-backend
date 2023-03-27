@@ -6,6 +6,7 @@ import fs from 'fs';
 import User from 'App/Models/User';
 import Comment from 'App/Models/Comment';
 import CreateCommentValidator from 'App/Validators/CreateCommentValidator';
+import Like from 'App/Models/Like';
 
 export default class PostsController {
   async create({ request, auth, response }: HttpContextContract) {
@@ -54,7 +55,7 @@ export default class PostsController {
 
   async myPosts({ auth }: HttpContextContract) {
     const user = await User.findBy("id", auth.user?.id)
-    const posts = await Post.query().where('createdBy', user!.id)
+    const posts = await Post.query().where('createdBy', user!.id).preload('comments').preload('likes')
     return posts
   }
 
@@ -78,6 +79,29 @@ export default class PostsController {
     } catch (error) {
       return response.status(500).json({
         message: 'Unable to add comment',
+        error: error.message,
+      })
+    }
+  }
+
+  public async addLike({ request, auth, response }: HttpContextContract) {
+    let like
+    try {
+        const post = await Post.find(request.input('id'))
+        if (!post) {
+            return response.status(404).json({ error: 'Post not found' })
+          }
+        like = await Like.create({
+            userId: auth.user?.id,
+            postId: post.id
+        })
+        return response.status(201).json({
+        message: 'Like added successfully',
+        data: like
+      })
+    } catch (error) {
+      return response.status(500).json({
+        message: 'Unable to add like',
         error: error.message,
       })
     }

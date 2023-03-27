@@ -36,4 +36,5 @@ Route.group(() => {
   Route.delete('delete', 'PostController.delete').middleware('auth')
   Route.get('myposts', 'PostController.myPosts').middleware('auth')
   Route.post('comment', 'PostController.addComment').middleware('auth')
+  Route.post('like', 'PostController.addLike').middleware('auth')
 }).prefix('post')
