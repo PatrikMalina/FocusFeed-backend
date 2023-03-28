@@ -1,4 +1,5 @@
 import type { WsContextContract } from '@ioc:Ruby184/Socket.IO/WsContext'
+import Friend from 'App/Models/Friend'
 import User from 'App/Models/User'
 import fs from 'fs'
 
@@ -84,5 +85,16 @@ export default class ActivityController {
         socket.nsp.emit('updateUser', user)
       }
     }
+  }
+
+  public async friendRequest({ socket, auth }: WsContextContract, userId: number) {
+    const data = { sentBy: auth.user?.id, sentTo: userId, accepted: 0 }
+    const friend = await Friend.create(data)
+
+    if (friend) {
+      socket.nsp.emit('friendRequest', friend)
+      return true
+    }
+    return false
   }
 }

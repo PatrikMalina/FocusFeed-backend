@@ -14,6 +14,7 @@ Ws.namespace('/')
   .disconnected('ActivityController.onDisconnected')
   .on('updateProfilePicture', 'ActivityController.updateProfilePicture')
   .on('updateProfileUsername', 'ActivityController.updateProfileUsername')
+  .on('friendRequest', 'ActivityController.friendRequest')
 
 Ws.namespace('chats/:chatId')
   .on('loadMessages', 'MessageController.loadMessages')
