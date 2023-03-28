@@ -56,4 +56,4 @@ Endpoint [documentation](https://mtaa4.docs.apiary.io/#)
 
 #### Database
 
-Designe of tables [here](https://dbdiagram.io/d/6404ea0a296d97641d858d52)
+Designs of tables [here](https://dbdiagram.io/d/6404ea0a296d97641d858d52)
