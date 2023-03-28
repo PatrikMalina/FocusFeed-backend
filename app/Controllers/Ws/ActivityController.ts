@@ -61,7 +61,7 @@ export default class ActivityController {
       const imageBuffer = Buffer.from(picture, 'base64')
 
       const writeStream = fs.createWriteStream(pathToImage)
-      writeStream.write(imageBuffer)
+      writeStream.write(`public/${imageBuffer}`)
       writeStream.end()
 
       user.pictureUrl = pathToImage
