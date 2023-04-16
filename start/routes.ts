@@ -32,6 +32,13 @@ Route.group(() => {
 }).prefix('auth')
 
 Route.group(() => {
+  Route.get('', 'ChatController.myChats')
+  Route.post('lastMessage', 'ChatController.lastMessage')
+})
+  .prefix('chat')
+  .middleware('auth')
+
+Route.group(() => {
   Route.post('create', 'PostController.create')
   Route.delete('delete', 'PostController.delete')
   Route.get('myposts', 'PostController.myPosts')
