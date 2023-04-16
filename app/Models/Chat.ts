@@ -1,17 +1,16 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, hasMany, HasMany, hasOne, HasOne } from '@ioc:Adonis/Lucid/Orm'
-import User from './User'
+import { BaseModel, column, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
 import Message from './Message'
 
 export default class Chat extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
-  @hasOne(() => User)
-  public user1: HasOne<typeof User>
+  @column()
+  public user1: number
 
-  @hasOne(() => User)
-  public user2: HasOne<typeof User>
+  @column()
+  public user2: number
 
   @hasMany(() => Message, {
     foreignKey: 'chatId',
