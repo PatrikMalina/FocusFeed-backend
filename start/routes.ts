@@ -44,6 +44,8 @@ Route.group(() => {
   Route.post('create', 'PostController.create')
   Route.delete('delete', 'PostController.delete')
   Route.get('myposts', 'PostController.myPosts')
+  Route.get('allposts', 'PostController.allPosts')
+  Route.get('postbyid/:id', 'PostController.postById')
   Route.post('comment', 'PostController.addComment')
   Route.post('like', 'PostController.addLike')
 })
