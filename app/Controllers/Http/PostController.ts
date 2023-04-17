@@ -59,6 +59,54 @@ export default class PostsController {
     return posts
   }
 
+  async allPosts({ }: HttpContextContract) {
+    const posts = await Post.query()
+      .join('users', 'posts.created_by', 'users.id')
+      .select('posts.*', 'users.username as createdByUsername', 'users.picture_url as profilePictureUrl')
+      .preload('comments', (query) => {
+        query
+          .join('users', 'comments.user_id', 'users.id')
+          .select('comments.*', 'users.username as commentByUsername', 'users.picture_url as commentProfilePictureUrl')
+      })
+      .preload('likes')
+  
+    const postsWithExtras = posts.map(post => {
+      const { createdByUsername, profilePictureUrl } = post.$extras
+      const commentsWithExtras = post.comments.map(comment => {
+        const { commentByUsername, commentProfilePictureUrl } = comment.$extras
+        return { ...comment.toJSON(), commentByUsername, commentProfilePictureUrl }
+      })
+      return { ...post.toJSON(), createdByUsername, profilePictureUrl, comments: commentsWithExtras }
+    })
+  
+    return postsWithExtras
+  }
+
+  async postById({ params }: HttpContextContract) {
+    const postId = params.id
+    const posts = await Post.query()
+      .where('posts.id', postId)
+      .join('users', 'posts.created_by', 'users.id')
+      .select('posts.*', 'users.username as createdByUsername', 'users.picture_url as profilePictureUrl')
+      .preload('comments', (query) => {
+        query
+          .join('users', 'comments.user_id', 'users.id')
+          .select('comments.*', 'users.username as commentByUsername', 'users.picture_url as commentProfilePictureUrl')
+      })
+      .preload('likes')
+  
+    const postsWithExtras = posts.map(post => {
+      const { createdByUsername, profilePictureUrl } = post.$extras
+      const commentsWithExtras = post.comments.map(comment => {
+        const { commentByUsername, commentProfilePictureUrl } = comment.$extras
+        return { ...comment.toJSON(), commentByUsername, commentProfilePictureUrl }
+      })
+      return { ...post.toJSON(), createdByUsername, profilePictureUrl, comments: commentsWithExtras }
+    })
+  
+    return postsWithExtras
+  }
+
   public async addComment({ request, auth, response }: HttpContextContract) {
     let comment
     try {
