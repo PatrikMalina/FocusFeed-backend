@@ -38,6 +38,8 @@ Route.group(() => {
   .prefix('chat')
   .middleware('auth')
 
+Route.get('', 'FriendsController.myFriends').prefix('friends').middleware('auth')
+
 Route.group(() => {
   Route.post('create', 'PostController.create')
   Route.delete('delete', 'PostController.delete')

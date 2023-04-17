@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import User from './User'
 
 export default class Friend extends BaseModel {
   @column({ isPrimary: true })
@@ -8,8 +9,18 @@ export default class Friend extends BaseModel {
   @column()
   public sentBy: number
 
+  @belongsTo(() => User, {
+    foreignKey: 'sentBy',
+  })
+  public sentByUser: BelongsTo<typeof User>
+
   @column()
   public sentTo: number
+
+  @belongsTo(() => User, {
+    foreignKey: 'sentTo',
+  })
+  public sentToUser: BelongsTo<typeof User>
 
   @column()
   public accepted: number
