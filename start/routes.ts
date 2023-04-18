@@ -42,7 +42,7 @@ Route.get('', 'FriendsController.myFriends').prefix('friends').middleware('auth'
 
 Route.group(() => {
   Route.post('create', 'PostController.create')
-  Route.delete('delete', 'PostController.delete')
+  Route.delete('delete/:id', 'PostController.delete')
   Route.get('myposts', 'PostController.myPosts')
   Route.get('allposts', 'PostController.allPosts')
   Route.get('postbyid/:id', 'PostController.postById')
@@ -52,4 +52,10 @@ Route.group(() => {
   .prefix('post')
   .middleware('auth')
 
-Route.put('updateEmail', 'UserController.updateProfileEmail').prefix('user').middleware('auth')
+
+Route.group(() => {
+  Route.put('updateEmail', 'UserController.updateProfileEmail')
+  Route.put('updateuser', 'UserController.updateProfileInfo')
+})
+  .prefix('user')
+  .middleware('auth')

@@ -35,9 +35,8 @@ export default class PostsController {
       })
   }
 
-  async delete({ auth, response, request }: HttpContextContract) {
-    const postId = request.input('id')
-
+  async delete({ auth, response, params }: HttpContextContract) {
+    const postId = params.id
     const post = await Post.find(postId)
 
     if (!post) {
