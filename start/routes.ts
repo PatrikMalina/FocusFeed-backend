@@ -33,7 +33,7 @@ Route.group(() => {
 
 Route.group(() => {
   Route.get('', 'ChatController.myChats')
-  Route.post('lastMessage', 'ChatController.lastMessage')
+  Route.put('loadMessages', 'ChatController.loadMessages')
 })
   .prefix('chat')
   .middleware('auth')
@@ -51,7 +51,6 @@ Route.group(() => {
 })
   .prefix('post')
   .middleware('auth')
-
 
 Route.group(() => {
   Route.put('updateEmail', 'UserController.updateProfileEmail')

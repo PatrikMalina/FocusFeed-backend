@@ -6,11 +6,15 @@ import Chat from 'App/Models/Chat'
 import Message from 'App/Models/Message'
 
 export default class MessageRepository implements MessageRepositoryContract {
-  public async getAll(chatId: number, paging: number): Promise<SerializedMessage[]> {
+  public async getAll(
+    chatId: number,
+    paging: number,
+    perPage: number
+  ): Promise<SerializedMessage[]> {
     const messages = await Message.query()
       .where('chatId', chatId)
       .orderBy('createdAt', 'desc')
-      .paginate(paging, 7)
+      .paginate(paging, perPage)
 
     return messages
       .all()
