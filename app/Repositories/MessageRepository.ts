@@ -9,17 +9,16 @@ export default class MessageRepository implements MessageRepositoryContract {
   public async getAll(
     chatId: number,
     paging: number,
-    perPage: number
+    perPage: number,
+    offset: number
   ): Promise<SerializedMessage[]> {
     const messages = await Message.query()
+      .offset(offset)
       .where('chatId', chatId)
       .orderBy('createdAt', 'desc')
       .paginate(paging, perPage)
 
-    return messages
-      .all()
-      .map((message) => message.serialize() as SerializedMessage)
-      .reverse()
+    return messages.all().map((message) => message.serialize() as SerializedMessage)
   }
 
   public async create(
@@ -27,7 +26,7 @@ export default class MessageRepository implements MessageRepositoryContract {
     userId: number,
     content: string
   ): Promise<SerializedMessage | null> {
-    const chat = await Chat.findBy('chatId', chatId)
+    const chat = await Chat.findBy('id', chatId)
 
     if (!chat) {
       return null
