@@ -25,6 +25,9 @@ export default class PostsController {
         post.caption = data.caption
         post.pictureUrl = imagePathWithoutPublic
         post.createdBy = user?.id
+        if (data.latitude && data.longitude){
+          post.location = `(${data.latitude},${data.longitude})`
+        }
         await post.save()
     } catch (error) {
       return error
@@ -54,7 +57,7 @@ export default class PostsController {
 
   async myPosts({ auth }: HttpContextContract) {
     const user = await User.findBy("id", auth.user?.id)
-    const posts = await Post.query().where('createdBy', user!.id).preload('comments').preload('likes')
+    const posts = await Post.query().where('createdBy', user!.id).preload('comments').preload('likes').orderBy('created_at', 'desc')
     return posts
   }
 
@@ -68,6 +71,7 @@ export default class PostsController {
           .select('comments.*', 'users.username as commentByUsername', 'users.picture_url as commentProfilePictureUrl')
       })
       .preload('likes')
+      .orderBy('created_at', 'desc')
   
     const postsWithExtras = posts.map(post => {
       const { createdByUsername, profilePictureUrl } = post.$extras

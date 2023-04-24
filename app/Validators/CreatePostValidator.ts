@@ -6,7 +6,9 @@ export default class CreatePostValidator {
 
   public schema = schema.create({
     caption: schema.string({ trim: true, escape: true }, [rules.required(), rules.maxLength(280)]),
-    picture: schema.string({}, [rules.required()])
+    picture: schema.string({}, [rules.required()]),
+    latitude: schema.number.optional(),
+    longitude: schema.number.optional(),
   })
 
   public messages = {

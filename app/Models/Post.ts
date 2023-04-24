@@ -12,7 +12,7 @@ export default class Post extends BaseModel {
   public createdBy: number
 
   @column()
-  public location: number[]
+  public location: string
 
   @column()
   public caption: string
