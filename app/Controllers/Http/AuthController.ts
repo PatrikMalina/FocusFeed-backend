@@ -6,7 +6,7 @@ import User from 'App/Models/User'
 import RegisterUserValidator from 'App/Validators/RegisterUserValidator'
 
 export default class AuthController {
-  async register({ request }: HttpContextContract) {
+  async register({ request, response }: HttpContextContract) {
     // if invalid, exception
     let user
     try {
@@ -35,7 +35,17 @@ export default class AuthController {
         })
       }
     } catch (error) {
-      return error
+      if (error.status === 422) {
+        return response.status(409).json({
+          message: 'Conflict',
+          error: error.messages,
+        })
+      }
+
+      return response.status(400).json({
+        message: 'Bad Request',
+        error: error.messages,
+      })
     }
 
     return user
