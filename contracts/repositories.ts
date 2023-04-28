@@ -8,12 +8,7 @@ declare module '@ioc:Repositories/MessageRepository' {
   }
 
   export interface MessageRepositoryContract {
-    getAll(
-      chatId: number,
-      paging: number,
-      perPage: number,
-      offset: number
-    ): Promise<SerializedMessage[]>
+    getAll(chatId: number, paging: number, perPage: number): Promise<SerializedMessage[]>
     create(chatId: number, userId: number, content: string): Promise<SerializedMessage | null>
   }
 

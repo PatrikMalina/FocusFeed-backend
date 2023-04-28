@@ -9,11 +9,9 @@ export default class MessageRepository implements MessageRepositoryContract {
   public async getAll(
     chatId: number,
     paging: number,
-    perPage: number,
-    offset: number
+    perPage: number
   ): Promise<SerializedMessage[]> {
     const messages = await Message.query()
-      .offset(offset)
       .where('chatId', chatId)
       .orderBy('createdAt', 'desc')
       .paginate(paging, perPage)

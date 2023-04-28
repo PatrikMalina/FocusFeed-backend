@@ -19,8 +19,7 @@ export default class ChatController {
     const chatId = request.input('chatId')
     const paging = request.input('paging')
     const perPage = request.input('perPage')
-    const offset = request.input('offset')
 
-    return this.messageRepository.getAll(chatId, paging, perPage, offset)
+    return this.messageRepository.getAll(chatId, paging, perPage)
   }
 }
