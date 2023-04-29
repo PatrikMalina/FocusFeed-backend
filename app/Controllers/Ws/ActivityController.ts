@@ -88,12 +88,19 @@ export default class ActivityController {
   }
 
   public async friendRequest({ socket, auth }: WsContextContract, userId: number) {
-    const data = { sentBy: auth.user?.id, sentTo: userId, accepted: 0 }
-    const friend = await Friend.create(data)
+    const data = { sentBy: auth.user!.id, sentTo: userId, accepted: 0 }
+    await Friend.create(data)
+
+    const friend = await Friend.query()
+      .where('sentBy', auth.user!.id)
+      .andWhere('sentTo', userId)
+      .preload('sentByUser')
+      .preload('sentToUser')
+      .first()
 
     if (friend) {
       socket.nsp.emit('friendRequest', friend)
-      return true
+      return friend
     }
     return false
   }
