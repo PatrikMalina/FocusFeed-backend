@@ -104,4 +104,21 @@ export default class ActivityController {
     }
     return false
   }
+
+  public async updateFriendRequest({ socket }: WsContextContract, id: number, status: number) {
+    const friend = await Friend.query()
+      .where('id', id)
+      .preload('sentByUser')
+      .preload('sentToUser')
+      .first()
+
+    if (friend) {
+      friend.accepted = status
+      await friend.save()
+
+      socket.nsp.emit('updateFriendRequest', friend)
+      return friend
+    }
+    return false
+  }
 }

@@ -15,5 +15,6 @@ Ws.namespace('/')
   .on('updateProfilePicture', 'ActivityController.updateProfilePicture')
   .on('updateProfileUsername', 'ActivityController.updateProfileUsername')
   .on('friendRequest', 'ActivityController.friendRequest')
+  .on('updateFriendRequest', 'ActivityController.updateFriendRequest')
 
 Ws.namespace('chats/:chatId').on('addMessage', 'MessageController.addMessage')
