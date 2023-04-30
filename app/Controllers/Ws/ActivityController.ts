@@ -1,4 +1,5 @@
 import type { WsContextContract } from '@ioc:Ruby184/Socket.IO/WsContext'
+import Chat from 'App/Models/Chat'
 import Friend from 'App/Models/Friend'
 import User from 'App/Models/User'
 import fs from 'fs'
@@ -118,6 +119,28 @@ export default class ActivityController {
 
       socket.nsp.emit('updateFriendRequest', friend)
       return friend
+    }
+    return false
+  }
+
+  public async createChat({ socket, auth }: WsContextContract, userId: number) {
+    const temp = await Chat.create({
+      user1: auth.user!.id,
+      user2: userId,
+    })
+
+    if (!temp) return false
+
+    const chat = await Chat.query()
+      .where('user1', auth.user!.id)
+      .andWhere('user2', userId)
+      .preload('user_1')
+      .preload('user_2')
+      .first()
+
+    if (chat) {
+      socket.nsp.emit('createChat', chat)
+      return chat
     }
     return false
   }
