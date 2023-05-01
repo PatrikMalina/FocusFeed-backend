@@ -31,7 +31,7 @@ export default class AuthController {
         await Message.create({
           chatId: chat.id,
           createdBy: focus.id,
-          content: 'Welcome to the FocusFeed!',
+          content: 'Welcome to the FocusFeed! 🎉😃',
         })
       }
     } catch (error) {
