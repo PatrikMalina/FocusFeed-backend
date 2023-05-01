@@ -2,6 +2,27 @@ import type { WsContextContract } from '@ioc:Ruby184/Socket.IO/WsContext'
 import Chat from 'App/Models/Chat'
 import Friend from 'App/Models/Friend'
 import User from 'App/Models/User'
+import axios from 'axios'
+import fs from 'fs'
+
+
+const sendNewFriendNotification = async (to: string, message: string, title: string, token: string) => {
+  const payload = {
+    to,
+    notification: { title, body: message },
+    data: {}
+  }
+  
+  const response = await axios.post('https://fcm.googleapis.com/fcm/send', payload, {
+    headers: {
+      'Authorization': `${token}`,
+      'Content-Type': 'application/json'
+    }
+  })
+
+  console.log(response);
+  
+}
 
 export default class ActivityController {
   constructor() {}
@@ -66,6 +87,17 @@ export default class ActivityController {
 
     if (friend) {
       socket.nsp.emit('friendRequest', friend)
+
+      const otherUser = await User.findBy('id', userId)
+      if(otherUser) {
+        const notificationToken = otherUser.registrationToken
+        const messageText = `New friend request from ${auth.user!.username}`
+        const title = `FocusFeed`
+        const authorizationToken = 'key=AAAA8lDsSsI:APA91bGTC0FzmLknQi3IQn9lhzxG4yqqVZ3h_X3fnOUvxd29K6GR9K4Dt-pbvpMT0Nbor5jrz13sHLDtFe16nvzBjs5ftuZW3wkpNyxr7HclnPhQJ73P4V1dme2KS8XPZGYcG7qLUac8'
+  
+        await sendNewFriendNotification(notificationToken, messageText, title, authorizationToken)
+      }
+
       return friend
     }
     return false

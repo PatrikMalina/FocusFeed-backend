@@ -19,6 +19,9 @@ export default class User extends BaseModel {
   @column()
   public pictureUrl: string
 
+  @column()
+  public registrationToken: string
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
