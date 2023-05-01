@@ -54,13 +54,25 @@ export default class AuthController {
   async login({ auth, request }: HttpContextContract) {
     const username = request.input('username')
     const password = request.input('password')
-
+    const registrationToken = request.input('registrationToken')
+    
+    const user = await User.findBy('username', username)
+    if (user) {
+      user.registrationToken = registrationToken
+      await user.save()
+    }
+    
     return auth.use('api').attempt(username, password, {
       expiresIn: '7 days',
     })
   }
 
   async logout({ auth }: HttpContextContract) {
+    const user = await User.findBy("id", auth.user?.id)
+  
+    if (user){
+      user.registrationToken = ''
+    }
     return auth.use('api').logout()
   }
 

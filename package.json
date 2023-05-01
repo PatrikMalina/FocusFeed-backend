@@ -61,6 +61,7 @@
     "@adonisjs/lucid": "^18.2.0",
     "@adonisjs/repl": "^3.1.11",
     "@ruby184/adonis-socket.io": "^0.2.0",
+    "axios": "^1.4.0",
     "base64-img": "^1.0.4",
     "luxon": "^3.1.0",
     "pg": "^8.8.0",
