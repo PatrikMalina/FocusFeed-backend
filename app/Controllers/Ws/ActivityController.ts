@@ -2,7 +2,6 @@ import type { WsContextContract } from '@ioc:Ruby184/Socket.IO/WsContext'
 import Chat from 'App/Models/Chat'
 import Friend from 'App/Models/Friend'
 import User from 'App/Models/User'
-import fs from 'fs'
 
 export default class ActivityController {
   constructor() {}
@@ -52,40 +51,6 @@ export default class ActivityController {
     }
 
     logger.info('websocket disconnected', reason)
-  }
-
-  public async updateProfilePicture({ socket, auth }: WsContextContract, picture: string) {
-    const user = await User.findBy('id', auth.user?.id)
-
-    if (user != null) {
-      const pathToImage = `images/${user.id}/profilePicture.jpg`
-
-      const imageBuffer = Buffer.from(picture, 'base64')
-
-      const writeStream = fs.createWriteStream(pathToImage)
-      writeStream.write(`public/${imageBuffer}`)
-      writeStream.end()
-
-      user.pictureUrl = pathToImage
-      await user.save()
-
-      socket.nsp.emit('updateUser', user)
-    }
-  }
-
-  public async updateProfileUsername({ socket, auth }: WsContextContract, username: string) {
-    const user = await User.findBy('id', auth.user?.id)
-
-    if (user != null) {
-      const tempUser = await User.findBy('username', username)
-
-      if (tempUser == null || tempUser.id == auth.user?.id) {
-        user.username = username
-        await user.save()
-
-        socket.nsp.emit('updateUser', user)
-      }
-    }
   }
 
   public async friendRequest({ socket, auth }: WsContextContract, userId: number) {
